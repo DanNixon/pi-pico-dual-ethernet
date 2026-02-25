@@ -1,0 +1,16 @@
+[formatter.typos]
+command = "typos"
+options = ["--write-changes", "--force-exclude"]
+includes = ["*"]
+excludes = [
+  "*.kicad_*",
+  "pcb/.gitignore",
+]
+
+[formatter.markdown]
+command = "mdl"
+includes = [ "*.md" ]
+
+[formatter.nix]
+command = "alejandra"
+includes = [ "*.nix" ]

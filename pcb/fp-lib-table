@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Connectors")(type "KiCad")(uri "${KIPRJMOD}/lib/Connectors/Connectors.pretty")(options "")(descr ""))
+  (lib (name "Modules")(type "KiCad")(uri "${KIPRJMOD}/lib/Modules/Modules.pretty")(options "")(descr ""))
+)
