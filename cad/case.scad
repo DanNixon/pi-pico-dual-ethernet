@@ -1,25 +1,26 @@
+board_size = [118, 56] + [1, 1];
+mount_size = board_size + [5, 5];
+height = 8;
+
 pcb_thickness = 1.6;
 
+screw_centres = [110, 48];
+screw_positions = [
+  [screw_centres[0] / 2, screw_centres[1] / 2],
+  [-screw_centres[0] / 2, screw_centres[1] / 2],
+  [screw_centres[0] / 2, -screw_centres[1] / 2],
+  [-screw_centres[0] / 2, -screw_centres[1] / 2],
+];
+
 module Case() {
-  board_size = [118, 56] + [1, 1];
-
-  height = 8;
   tray_depth = 4;
-
-  screw_centres = [110, 48];
-  screw_positions = [
-    [screw_centres[0] / 2, screw_centres[1] / 2],
-    [-screw_centres[0] / 2, screw_centres[1] / 2],
-    [screw_centres[0] / 2, -screw_centres[1] / 2],
-    [-screw_centres[0] / 2, -screw_centres[1] / 2],
-  ];
 
   difference() {
     union() {
       difference() {
         translate([0, 0, -height]) {
           linear_extrude(height) {
-            square(board_size + [5, 5], center = true);
+            square(mount_size, center = true);
           }
         }
 
@@ -49,4 +50,45 @@ module Case() {
   }
 }
 
+module DinBracketMount() {
+  h2 = 6;
+  depth = 30;
+  fw = 1.8;
+  ho = 3.7;
+
+  difference() {
+    translate([0, 0, -height - h2]) {
+      linear_extrude(h2) {
+        square(mount_size, center = true);
+      }
+    }
+
+    translate([0, 0, -height - h2 - 0.01]) {
+      for(p = screw_positions) {
+        translate(p) {
+          cylinder(d = 4, h = h2 + 0.1);
+        }
+      }
+
+      o = -(mount_size[1] / 2) + 12;
+      for(y = [o, o + 38]) {
+        translate([0, y, ho]) {
+          for(a = [0, 180]) {
+            rotate([0, 0, a]) {
+              translate([(mount_size[0] / 2) - depth + 0.1, 0, 0]) {
+                rotate([0, 90, 0])
+                cylinder(d = 4, h = depth, $fn = 9);
+              }
+              translate([(mount_size[0] / 2) - depth + 0.1, -fw / 2, -ho]) {
+                cube([depth, fw, ho]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 Case();
+DinBracketMount();
